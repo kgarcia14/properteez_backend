@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3333;
 
 
 app.listen(PORT, () => {
- console.log(`Server is listening on http://${hostname}:${PORT}`);
+    console.log(`server is running on port: ${PORT}`)
 });
 
 const propertiesRoute = require('./routes/properties');
