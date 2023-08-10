@@ -5,11 +5,11 @@ const app = express();
 require('dotenv').config()
 
 const hostname = '127.0.0.1';
-const PORT = '3333';
+const PORT = process.env.PORT || 3333;
 
 
 
-app.listen(process.env.PORT || PORT, () => {
+app.listen(PORT, () => {
  console.log(`Server is listening on http://${hostname}:${PORT}`);
 });
 
