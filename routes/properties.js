@@ -6,8 +6,6 @@ const db = require('../db');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-import { storage } from '../firebase';
-import { ref } from 'firebase/storage'
 
 const jwt = require('jsonwebtoken');
 

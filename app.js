@@ -10,12 +10,12 @@ const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 
-
+//App Server
 app.listen(PORT, () => {
     console.log(`App server is listening on http://${HOSTNAME}:${PORT}`);
 });
 
-
+//Auth Server
 app.listen(AUTH_PORT, () => {
     console.log(`Auth server is listening on http://${HOSTNAME}:${AUTH_PORT}`);
 })
