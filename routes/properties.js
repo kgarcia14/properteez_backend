@@ -1,15 +1,41 @@
 'use strict';
 
+require('dotenv').config()
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
 
+const jwt = require('jsonwebtoken');
+
 //MIDDLEWARE
 router.use(express.json())
 
+//Middleware to validate token before executing route
+const validateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader.split(" ")[1];
+
+    if (token === null) {
+        res.sendStatus(400).send('Token not present');
+    }
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
+            res.status(403).send('Token Invalid');
+        } 
+        else {
+            console.log(user) 
+            req.user = user;
+            next();
+        }
+    });
+}
+
 //ROUTES
 //Get all properties
-router.get('/properties/:user_id', async (req, res) => {
+router.get('/properties/:user_id', validateToken, async (req, res) => {
+    console.log('Token is valid!');
+
     try {
         const results = await db.query('SELECT * FROM properties WHERE user_id = $1', [req.params.user_id]);
     
@@ -26,7 +52,7 @@ router.get('/properties/:user_id', async (req, res) => {
 });
 
 //Get one property to display in details modal
-router.get('/properties/property_info/:id', async (req, res) => {
+router.get('/properties/propertyInfo/:id', validateToken, async (req, res) => {
     try {
         const results = await db.query('SELECT * FROM properties WHERE id = $1', [req.params.id]);
 
@@ -42,7 +68,7 @@ router.get('/properties/property_info/:id', async (req, res) => {
 }); 
 
 //Create property
-router.post('/properties', async (req, res) => {
+router.post('/properties', validateToken, async (req, res) => {
     try {
         const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_term, rent_amount, rent_status) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *', [req.body.user_id, req.body.street, req.body.city, req.body.state, req.body.zip, req.body.mortgage_amount, req.body.vacancy, req.body.renter_name, req.body.renter_number, req.body.renter_email, req.body.lease_term, req.body.rent_amount, req.body.rent_status]);
 
@@ -60,7 +86,7 @@ router.post('/properties', async (req, res) => {
 });
 
 //Edit property
-router.put('/properties/:id', async (req, res) => {
+router.put('/properties/:id', validateToken, async (req, res) => {
     try {
         const results = await db.query('UPDATE properties SET street = $1, city = $2, state = $3, zip = $4, mortgage_amount = $5, vacancy = $6, renter_name = $7, renter_number = $8, renter_email = $9, lease_term = $10, rent_amount = $11, rent_status = $12 WHERE id = $13 RETURNING *', [req.body.street, req.body.city, req.body.state, req.body.zip, req.body.mortgage_amount, req.body.vacancy, req.body.renter_name, req.body.renter_number, req.body.renter_email, req.body.lease_term, req.body.rent_amount, req.body.rent_status, req.params.id]);
     
@@ -79,7 +105,7 @@ router.put('/properties/:id', async (req, res) => {
 });
 
 //Delete property
-router.delete('/properties/:id', async (req, res) => {
+router.delete('/properties/:id', validateToken, async (req, res) => {
     try {
         const results = await db.query('DELETE FROM properties WHERE id = $1', [req.params.id]);
 
