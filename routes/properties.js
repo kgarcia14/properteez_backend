@@ -105,9 +105,13 @@ router.post('/properties', validateToken, uploadImage, async (req, res) => {
 });
 
 //Edit property
-router.put('/properties/:id', validateToken, async (req, res) => {
+router.put('/properties/:id', validateToken, uploadImage, async (req, res) => {
+    console.log(req.file);
+
+    const data = JSON.parse(req.body.data);
+
     try {
-        const results = await db.query('UPDATE properties SET street = $1, city = $2, state = $3, zip = $4, mortgage_amount = $5, vacancy = $6, renter_name = $7, renter_number = $8, renter_email = $9, lease_term = $10, rent_amount = $11, rent_status = $12 WHERE id = $13 RETURNING *', [req.body.street, req.body.city, req.body.state, req.body.zip, req.body.mortgage_amount, req.body.vacancy, req.body.renter_name, req.body.renter_number, req.body.renter_email, req.body.lease_term, req.body.rent_amount, req.body.rent_status, req.params.id]);
+        const results = await db.query('UPDATE properties SET street = $1, city = $2, state = $3, zip = $4, mortgage_amount = $5, vacancy = $6, renter_name = $7, renter_number = $8, renter_email = $9, lease_term = $10, rent_amount = $11, rent_status = $12, property_image = $13 WHERE id = $14 RETURNING *', [req.body.street, req.body.city, req.body.state, req.body.zip, req.body.mortgage_amount, req.body.vacancy, req.body.renter_name, req.body.renter_number, req.body.renter_email, req.body.lease_term, req.body.rent_amount, req.body.rent_status, req.file.path, req.params.id]);
     
         console.log(results);
     
