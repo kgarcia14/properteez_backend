@@ -8,7 +8,6 @@ const multer = require('multer');
 const path = require('path');
 
 const jwt = require('jsonwebtoken');
-const { getStorage } = require('firebase/storage');
 
 //MIDDLEWARE
 router.use(express.json())
