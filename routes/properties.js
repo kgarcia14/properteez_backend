@@ -6,6 +6,8 @@ const db = require('../db');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+import { storage } from '../firebase';
+import { ref } from 'firebase/storage'
 
 const jwt = require('jsonwebtoken');
 
@@ -36,7 +38,7 @@ const validateToken = (req, res, next) => {
 //Middleware to upload image before executing POST || PUT routes
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `${ref.storage}`)
+        cb(null, './images')
     },
     filename: (req, file, cb) => {
         console.log(file);
