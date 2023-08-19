@@ -7,7 +7,7 @@ const app = express();
 
 const HOSTNAME = '127.0.0.1';
 const PORT = process.env.PORT || process.env.APP_SERVER_PORT;
-const AUTH_PORT = process.env.TOKEN_SERVER_PORT
+const AUTH_PORT = process.env.PORT || process.env.TOKEN_SERVER_PORT
 
 
 
