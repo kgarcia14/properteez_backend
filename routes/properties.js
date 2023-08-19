@@ -1,11 +1,14 @@
 'use strict';
 
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 
 const jwt = require('jsonwebtoken');
+const { getStorage } = require('firebase/storage');
 
 //MIDDLEWARE
 router.use(express.json())
@@ -30,6 +33,19 @@ const validateToken = (req, res, next) => {
         }
     });
 }
+
+//Middleware to upload image before executing POST || PUT routes
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, `${ref.storage}`)
+    },
+    filename: (req, file, cb) => {
+        console.log(file);
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+})
+
+const uploadImage = multer({storage: storage}).single('image')
 
 //ROUTES
 //Get all properties
@@ -68,9 +84,13 @@ router.get('/properties/propertyInfo/:id', validateToken, async (req, res) => {
 }); 
 
 //Create property
-router.post('/properties', validateToken, async (req, res) => {
+router.post('/properties', validateToken, uploadImage, async (req, res) => {
+    console.log(req.file);
+
+    const data = JSON.parse(req.body.data);
+
     try {
-        const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_term, rent_amount, rent_status) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *', [req.body.user_id, req.body.street, req.body.city, req.body.state, req.body.zip, req.body.mortgage_amount, req.body.vacancy, req.body.renter_name, req.body.renter_number, req.body.renter_email, req.body.lease_term, req.body.rent_amount, req.body.rent_status]);
+        const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_term, rent_amount, rent_status, property_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *', [data.user_id, data.street, data.city, data.state, data.zip, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_term, data.rent_amount, data.rent_status, req.file.path]);
 
         console.log(results);
         
