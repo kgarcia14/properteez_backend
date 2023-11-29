@@ -19,7 +19,13 @@ router.post('/register', async (req, res) => {
         const results = await db.query('INSERT INTO users(user_email, hashed_password) VALUES($1, $2) RETURNING *', [req.body.user_email, hash]);
         res.status(201).json('Registered successfully!!!');
     } catch (err){
-        console.log(err);
+        // console.log(err);
+
+        if (err.detail.includes('already exists')) {
+            console.log('yoooo that email already exists bro');
+            res.status(400).json({message: 'email exists!'});
+        }
+
     }
 });
 
