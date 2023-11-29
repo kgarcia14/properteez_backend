@@ -13,6 +13,7 @@ router.use(express.json())
 
 //Register user email & password
 router.post('/register', async (req, res) => {
+    console.log(req.body)
     try {
         const hash = await bcrypt.hash(req.body.user_password, 10);
         const results = await db.query('INSERT INTO users(user_email, hashed_password) VALUES($1, $2) RETURNING *', [req.body.user_email, hash]);
