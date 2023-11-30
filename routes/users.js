@@ -11,18 +11,38 @@ const jwt = require('jsonwebtoken');
 //MIDDLEWARE
 router.use(express.json())
 
+
+//Refresh Tokens Array
+let refreshTokens = [];
+
+//Generate accessToken Function
+const generateAccessToken = (user) => {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+}
+
+// Generate refreshToken Function
+const generateRefreshToken = (user) => {
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '20m'});
+    refreshTokens.push(refreshToken);
+    console.log(refreshTokens);
+    return refreshToken;
+}
+
 //Register user email & password
 router.post('/register', async (req, res) => {
     console.log(req.body)
     try {
         const hash = await bcrypt.hash(req.body.user_password, 10);
         const results = await db.query('INSERT INTO users(user_email, hashed_password) VALUES($1, $2) RETURNING *', [req.body.user_email, hash]);
-        res.status(201).json('Registered successfully!!!');
+        
+        const accessToken = generateAccessToken({user: results[0].user_email});
+        const refreshToken = generateRefreshToken({user: results[0].user_email});
+        
+        res.status(201).json({results: results[0], accessToken: accessToken, refreshToken: refreshToken});
     } catch (err){
-        // console.log(err);
+        console.log(err);
 
         if (err.detail.includes('already exists')) {
-            console.log('yoooo that email already exists bro');
             res.status(400).json({message: 'email exists!'});
         }
 
@@ -56,8 +76,6 @@ router.post('/login', async (req, res) => {
     }
 })
 
-let refreshTokens = [];
-
 //Refresh accessToken and refreshToken and remove old refreshToken
 router.post('/refreshToken', async (req, res) => {
     console.log(req.body, '!!!!');
@@ -79,22 +97,6 @@ router.delete('/logout', (req, res) => {
 
     res.status(204).send('Logged out!');
 })
-
-//Generate accessToken
-const generateAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
-}
-
-// Generate refreshToken
-const generateRefreshToken = (user) => {
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '20m'});
-    refreshTokens.push(refreshToken);
-    console.log(refreshTokens);
-    return refreshToken;
-}
-
-
-
 
 //Need route to delete user accounts email & password (will need to delete user and user's properties)
 
