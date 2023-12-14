@@ -5,11 +5,6 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 
-const cors = require('cors');
-app.use(cors({
-    origin: 'http://localhost:3000'
-}));
-
 const HOSTNAME = '127.0.0.1';
 const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT

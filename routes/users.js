@@ -4,12 +4,19 @@ require('dotenv').config()
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
+const cors = require('cors');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 //MIDDLEWARE
-router.use(express.json())
+router.use(express.json());
+router.use(cookieParser());
+router.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
 
 
 //Refresh Tokens Array
@@ -17,12 +24,12 @@ let refreshTokens = [];
 
 //Generate accessToken Function
 const generateAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '5m'});
 }
 
 // Generate refreshToken Function
 const generateRefreshToken = (user) => {
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '20m'});
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '10m'});
     refreshTokens.push(refreshToken);
     console.log(refreshTokens);
     return refreshToken;
@@ -37,8 +44,15 @@ router.post('/register', async (req, res) => {
         
         const accessToken = generateAccessToken({user: results[0].user_email});
         const refreshToken = generateRefreshToken({user: results[0].user_email});
-        
-        res.status(201).json({results: results[0], accessToken: accessToken, refreshToken: refreshToken});
+
+        res.cookie('jwt', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 60000
+        })
+
+        res.status(201).json({results: results[0], accessToken: accessToken});
     } catch (err){
         console.log(err);
 
@@ -88,7 +102,13 @@ router.post('/refreshToken', async (req, res) => {
     const accessToken = generateAccessToken({user: req.body.user_email});
     const refreshToken = generateRefreshToken({user: req.body.user_email}); 
      
-    res.status(201).json({accessToken: accessToken, refreshToken: refreshToken}) 
+    res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+        sameSite: 'none', secure: true,
+        maxAge: 24 * 60 * 60 * 1000
+    });
+    
+    res.status(201).json({accessToken: accessToken}) 
 });
 
 //Delete refresh tokens
