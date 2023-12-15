@@ -4,7 +4,7 @@ CREATE DATABASE property_portfolio;
 -- Create a table
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    user_email VARCHAR (200) NOT NULL,
+    user_email VARCHAR (200) UNIQUE NOT NULL,
     hashed_password VARCHAR (200) NOT NULL
 );
 
