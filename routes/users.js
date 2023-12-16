@@ -45,8 +45,6 @@ router.post('/register', async (req, res) => {
         const accessToken = generateAccessToken({user: results[0].user_email});
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
-        res.setHeader('Set-Cookie', 'yourCookieName=yourCookieValue; Path=/')
-
         res.cookie('jwt', refreshToken, {
             httpOnly: true,
             secure: true,
