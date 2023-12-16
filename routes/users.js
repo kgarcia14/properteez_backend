@@ -45,11 +45,14 @@ router.post('/register', async (req, res) => {
         const accessToken = generateAccessToken({user: results[0].user_email});
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
+        res.setHeader('Set-Cookie', 'yourCookieName=yourCookieValue; Path=/')
+
         res.cookie('jwt', refreshToken, {
             httpOnly: true,
             secure: true,
+            path: '/',
             sameSite: 'none',
-            maxAge: 60000
+            maxAge: 60000,
         })
 
         res.status(201).json({results: results[0], accessToken: accessToken});
