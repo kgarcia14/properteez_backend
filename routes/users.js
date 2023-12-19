@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 router.use(express.json());
 router.use(cookieParser());
 router.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://properteez.kgbackend.com',
     credentials: true,
 }));
 
