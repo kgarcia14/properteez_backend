@@ -49,6 +49,7 @@ router.post('/register', async (req, res) => {
             httpOnly: true,
             secure: true,
             domain: '.kurtisgarcia.dev',
+            path: '/register',
             sameSite: 'none',
             maxAge: 60000,
         })
