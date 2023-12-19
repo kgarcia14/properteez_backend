@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 router.use(express.json());
 router.use(cookieParser());
 router.use(cors({
-    origin: 'https://properteez.kgbackend.com',
+    origin: 'https://properteez.kurtisgarcia.dev',
     credentials: true,
 }));
 
