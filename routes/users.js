@@ -47,6 +47,7 @@ router.post('/register', async (req, res) => {
 
         res.cookie('jwt', refreshToken, {
             domain: 'properteez.kurtisgarcia.dev',
+            path: '/',
             maxAge: 60000,
             httpOnly: true,
             secure: true,
