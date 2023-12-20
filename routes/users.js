@@ -3,8 +3,8 @@
 require('dotenv').config()
 const express = require('express');
 const db = require('../db');
-// const router = express.Router();
-const cors = require('cors');
+const router = express.Router();
+// const cors = require('cors');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
