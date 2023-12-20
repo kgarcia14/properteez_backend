@@ -4,7 +4,6 @@ require('dotenv').config()
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
-// const cors = require('cors');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -13,10 +12,6 @@ const cookieParser = require('cookie-parser');
 //MIDDLEWARE
 router.use(express.json());
 router.use(cookieParser());
-// router.use(cors({
-//     origin: 'https://properteez.kurtisgarcia.dev',
-//     credentials: true,
-// }));
 
 
 //Refresh Tokens Array
@@ -46,6 +41,7 @@ router.post('/register', async (req, res) => {
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
         res.cookie('jwt', refreshToken, {
+            domain: '.kurtisgarcia.dev',
             maxAge: 60000,
             httpOnly: true,
             secure: true,
