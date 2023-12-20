@@ -12,7 +12,7 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 // CORS Middleware
 const cors = require('cors');
 app.use(cors({
-    origin: 'https://kurtisgarcia.dev',
+    origin: 'https://.kurtisgarcia.dev',
     credentials: true,
 }));
 
