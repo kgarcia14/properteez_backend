@@ -13,7 +13,6 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 const cors = require('cors');
 app.use(cors({
     origin: 'https://properteez.kurtisgarcia.dev',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
 
