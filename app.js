@@ -9,6 +9,13 @@ const HOSTNAME = '127.0.0.1';
 const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
+// CORS Middleware
+const cors = require('cors');
+app.use(cors({
+    origin: 'https://properteez.kurtisgarcia.dev',
+    credentials: true,
+}));
+
 
 //App Server
 app.listen(PORT, () => {
