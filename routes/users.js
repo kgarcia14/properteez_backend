@@ -45,6 +45,10 @@ router.post('/register', async (req, res) => {
         const accessToken = generateAccessToken({user: results[0].user_email});
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
+        res.header('Access-Control-Allow-Origin', 'https://properteez.kurtisgarcia.dev');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.header('Access-Control-Allow-Credentials', 'true');
+
         res.cookie('jwt', refreshToken, {
             httpOnly: true,
             secure: true,
