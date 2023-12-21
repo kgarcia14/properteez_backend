@@ -41,10 +41,11 @@ router.post('/register', async (req, res) => {
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
         res.cookie('jwt', refreshToken, {
+            domain: '.kurtisgarcia.dev',
             maxAge: 60000,
             httpOnly: true,
             secure: true,
-            sameSite: 'lax',
+            sameSite: 'None',
         })
 
         res.status(201).json({results: results[0], accessToken: accessToken});
