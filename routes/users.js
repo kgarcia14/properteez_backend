@@ -7,9 +7,11 @@ const router = express.Router();
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 //MIDDLEWARE
 router.use(express.json());
+router.use(cookieParser());
 
 
 //Refresh Tokens Array
@@ -39,6 +41,7 @@ router.post('/register', async (req, res) => {
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
         res.cookie('jwt', refreshToken, {
+            domain: 'properteez.kurtisgarcia.dev',
             maxAge: 60000,
             httpOnly: true,
             secure: true,
