@@ -44,8 +44,9 @@ router.post('/register', async (req, res) => {
             maxAge: 60000,
             httpOnly: true,
             secure: true,
-            sameSite: 'none',
+            sameSite: 'None',
         })
+        res.set('Access-Control-Expose-Headers')
 
         res.status(201).json({results: results[0], accessToken: accessToken});
     } catch (err){
