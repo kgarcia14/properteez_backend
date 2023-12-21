@@ -7,11 +7,9 @@ const router = express.Router();
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
 
 //MIDDLEWARE
 router.use(express.json());
-router.use(cookieParser());
 
 
 //Refresh Tokens Array
@@ -46,7 +44,6 @@ router.post('/register', async (req, res) => {
             secure: true,
             sameSite: 'None',
         })
-        res.set('Access-Control-Expose-Headers')
 
         res.status(201).json({results: results[0], accessToken: accessToken});
     } catch (err){
