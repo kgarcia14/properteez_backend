@@ -45,7 +45,7 @@ router.post('/register', async (req, res) => {
             maxAge: 60000,
             httpOnly: true,
             secure: true,
-            sameSite: 'None',
+            sameSite: 'lax',
         })
 
         res.status(201).json({results: results[0], accessToken: accessToken});
