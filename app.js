@@ -11,9 +11,16 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 // CORS Middleware
 const cors = require('cors');
+// Allow requests only from the specified origin
+const allowedOrigins = ['https://properteez.kurtisgarcia.dev'];
 app.use(cors({
-    origin: 'https://properteez.kurtisgarcia.dev',
-    credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
 }));
 
 
