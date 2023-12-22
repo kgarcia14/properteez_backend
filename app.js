@@ -11,6 +11,8 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 // CORS Middleware
 // const cors = require('cors');
+// app.options('*', cors());
+
 // app.use(cors({
 //     origin: 'https://properteez.kurtisgarcia.dev',
 //     credentials: true,
@@ -33,7 +35,21 @@ app.use(() => {
     res.setHeader("Access-Control-Allow-Private-Network", true);
 
     next();
-})
+});
+
+app.options("*", (req, res) => {
+  console.log("preflight");
+  if (
+    req.headers.origin === "https://properteezapi.kurtisgarcia.dev" &&
+    allowMethods.includes(req.headers["access-control-request-method"]) &&
+    allowHeaders.includes(req.headers["access-control-request-headers"])
+  ) {
+    console.log("pass");
+    return res.status(204).send();
+  } else {
+    console.log("fail");
+  }
+});
 
 
 //App Server
