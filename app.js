@@ -10,11 +10,30 @@ const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 // CORS Middleware
-const cors = require('cors');
-app.use(cors({
-    origin: 'https://properteez.kurtisgarcia.dev',
-    credentials: true,
-}));
+// const cors = require('cors');
+// app.use(cors({
+//     origin: 'https://properteez.kurtisgarcia.dev',
+//     credentials: true,
+// }));
+
+app.use(() => {
+    res.setHeader(
+        "Access-Control-Allow-Origin",
+        "https://your-frontend.com"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    res.setHeader("Access-Control-Allow-Private-Network", true);
+
+    next();
+})
 
 
 //App Server
