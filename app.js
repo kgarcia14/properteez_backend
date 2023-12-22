@@ -19,7 +19,7 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 app.use(() => {
     res.setHeader(
         "Access-Control-Allow-Origin",
-        "https://your-frontend.com"
+        "https://properteez.kurtisgarcia.dev"
     );
     res.setHeader(
         "Access-Control-Allow-Methods",
