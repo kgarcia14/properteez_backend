@@ -9,13 +9,20 @@ const HOSTNAME = '127.0.0.1';
 const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
-// CORS Middleware
-// const cors = require('cors');
+// CORS Middleware at the application level for all routes
+const cors = require('cors');
 
-// app.use(cors({
-//     origin: 'https://properteez.kurtisgarcia.dev',
-//     credentials: true,
-// }));
+if (process.env.NODE_ENV === 'development') {
+    app.use(cors({
+        origin: 'http://localhost:3000/',
+        credentials: true,
+    }));
+} else {
+    app.use(cors({
+        origin: 'https://properteez.kurtisgarcia.dev',
+        credentials: true,
+    }));
+}
 
 //App Server
 app.listen(PORT, () => {

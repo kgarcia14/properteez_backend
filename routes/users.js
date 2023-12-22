@@ -8,15 +8,15 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
+// const cors = require('cors');
 
 //MIDDLEWARE
 router.use(express.json());
 router.use(cookieParser());
-router.use(cors({
-    origin: 'https://properteez.kurtisgarcia.dev',
-    credentials: true,
-}));
+// router.use(cors({
+//     origin: 'https://properteez.kurtisgarcia.dev',
+//     credentials: true,
+// }));
 
 
 //Refresh Tokens Array
@@ -45,13 +45,23 @@ router.post('/register', async (req, res) => {
         const accessToken = generateAccessToken({user: results[0].user_email});
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
-        res.cookie('jwt', accessToken, {
-            domain: '.kurtisgarcia.dev',
-            maxAge: 60000,
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None',
-        })
+        if (process.env.NODE_ENV === 'development') {
+            res.cookie('jwt', accessToken, {
+                domain: '.kurtisgarcia.dev',
+                maxAge: 60000,
+                httpOnly: true,
+                secure: true,
+                sameSite: 'None',
+            })
+        } else {
+            res.cookie('jwt', accessToken, {
+                domain: '.kurtisgarcia.dev',
+                maxAge: 60000,
+                httpOnly: true,
+                secure: true,
+                sameSite: 'None',
+            })
+        }
 
         res.status(201).json({results: results[0], accessToken: accessToken});
     } catch (err){
