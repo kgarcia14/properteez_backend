@@ -8,10 +8,15 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 //MIDDLEWARE
 router.use(express.json());
 router.use(cookieParser());
+router.use(cors({
+    origin: 'https://properteez.kurtisgarcia.dev',
+    credentials: true,
+}));
 
 
 //Refresh Tokens Array
