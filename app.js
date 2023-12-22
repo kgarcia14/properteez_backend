@@ -40,7 +40,7 @@ app.use(() => {
 app.options("*", (req, res) => {
   console.log("preflight");
   if (
-    req.headers.origin === "https://properteezapi.kurtisgarcia.dev" &&
+    req.headers.origin === "https://properteez.kurtisgarcia.dev" &&
     allowMethods.includes(req.headers["access-control-request-method"]) &&
     allowHeaders.includes(req.headers["access-control-request-headers"])
   ) {
