@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
         const accessToken = generateAccessToken({user: results[0].user_email});
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
-        res.cookie('jwt', refreshToken, {
+        res.cookie('jwt', accessToken, {
             domain: '.kurtisgarcia.dev',
             maxAge: 60000,
             httpOnly: true,
