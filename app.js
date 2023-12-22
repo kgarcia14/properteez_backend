@@ -14,8 +14,6 @@ const cors = require('cors');
 app.use(cors({
     origin: 'https://properteez.kurtisgarcia.dev',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 
