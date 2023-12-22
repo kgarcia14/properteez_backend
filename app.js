@@ -11,46 +11,11 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 // CORS Middleware
 // const cors = require('cors');
-// app.options('*', cors());
 
 // app.use(cors({
 //     origin: 'https://properteez.kurtisgarcia.dev',
 //     credentials: true,
 // }));
-
-app.use(() => {
-    res.setHeader(
-        "Access-Control-Allow-Origin",
-        "https://properteez.kurtisgarcia.dev"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    res.setHeader("Access-Control-Allow-Private-Network", true);
-
-    next();
-});
-
-app.options("*", (req, res) => {
-  console.log("preflight");
-  if (
-    req.headers.origin === "https://properteez.kurtisgarcia.dev" &&
-    allowMethods.includes(req.headers["access-control-request-method"]) &&
-    allowHeaders.includes(req.headers["access-control-request-headers"])
-  ) {
-    console.log("pass");
-    return res.status(204).send();
-  } else {
-    console.log("fail");
-  }
-});
-
 
 //App Server
 app.listen(PORT, () => {
