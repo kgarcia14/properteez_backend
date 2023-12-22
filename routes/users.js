@@ -47,11 +47,10 @@ router.post('/register', async (req, res) => {
 
         if (process.env.NODE_ENV === 'development') {
             res.cookie('jwt', accessToken, {
-                domain: '.kurtisgarcia.dev',
+                domain: '.localhost:3000',
                 maxAge: 60000,
                 httpOnly: true,
-                secure: true,
-                sameSite: 'None',
+                sameSite: 'lax',
             })
         } else {
             res.cookie('jwt', accessToken, {
