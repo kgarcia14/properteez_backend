@@ -41,7 +41,7 @@ router.post('/register', async (req, res) => {
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
         res.cookie('jwt', refreshToken, {
-            domain: 'properteez.kgbackend.com',
+            domain: 'properteez.kurtisgarcia.dev',
             maxAge: 60000,
             httpOnly: true,
             secure: true,
