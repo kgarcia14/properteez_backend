@@ -14,7 +14,7 @@ router.use(express.json())
 
 //Middleware to validate token before executing route
 const validateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
+    const authHeader = `Bearer ${req.cookies.jwt}`;
     const token = authHeader.split(" ")[1];
 
     if (token === null) {

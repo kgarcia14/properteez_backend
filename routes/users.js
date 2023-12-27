@@ -24,12 +24,12 @@ let refreshTokens = [];
 
 //Generate accessToken Function
 const generateAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '5m'});
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10m'});
 }
 
 // Generate refreshToken Function
 const generateRefreshToken = (user) => {
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '10m'});
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '15m'});
     refreshTokens.push(refreshToken);
     console.log(refreshTokens);
     return refreshToken;
@@ -46,16 +46,38 @@ router.post('/register', async (req, res) => {
         const refreshToken = generateRefreshToken({user: results[0].user_email});
 
         if (process.env.NODE_ENV === 'development') {
+            res.cookie('id', results[0].id, {
+                domain: 'localhost',
+                maxAge: 600000,
+                sameSite: 'lax',
+            })
+            res.cookie('email', results[0].user_email, {
+                domain: 'localhost',
+                maxAge: 600000,
+                sameSite: 'lax',
+            })
             res.cookie('jwt', accessToken, {
                 domain: 'localhost',
-                maxAge: 60000,
+                maxAge: 600000,
                 httpOnly: true,
                 sameSite: 'lax',
             })
         } else {
+            res.cookie('id', results[0].id, {
+                domain: '.kurtisgarcia.dev',
+                maxAge: 600000,
+                secure: true,
+                sameSite: 'None',
+            })
+            res.cookie('email', results[0].user_email, {
+                domain: '.kurtisgarcia.dev',
+                maxAge: 600000,
+                secure: true,
+                sameSite: 'None',
+            })
             res.cookie('jwt', accessToken, {
                 domain: '.kurtisgarcia.dev',
-                maxAge: 60000,
+                maxAge: 600000,
                 httpOnly: true,
                 secure: true,
                 sameSite: 'None',
@@ -88,7 +110,46 @@ router.post('/login', async (req, res) => {
                 const accessToken = generateAccessToken({user: user[0].user_email});
                 const refreshToken = generateRefreshToken({user: user[0].user_email});
 
-                res.status(201).json({accessToken: accessToken, refreshToken: refreshToken});
+                if (process.env.NODE_ENV === 'development') {
+                    res.cookie('id', user[0].id, {
+                        domain: 'localhost',
+                        maxAge: 600000,
+                        sameSite: 'lax',
+                    })
+                    res.cookie('email', user[0].user_email, {
+                        domain: 'localhost',
+                        maxAge: 600000,
+                        sameSite: 'lax',
+                    })
+                    res.cookie('jwt', accessToken, {
+                        domain: 'localhost',
+                        maxAge: 600000,
+                        httpOnly: true,
+                        sameSite: 'lax',
+                    })
+                } else {
+                    res.cookie('id', user[0].id, {
+                        domain: '.kurtisgarcia.dev',
+                        maxAge: 600000,
+                        secure: true,
+                        sameSite: 'None',
+                    })
+                    res.cookie('email', user[0].user_email, {
+                        domain: '.kurtisgarcia.dev',
+                        maxAge: 600000,
+                        secure: true,
+                        sameSite: 'None',
+                    })
+                    res.cookie('jwt', accessToken, {
+                        domain: '.kurtisgarcia.dev',
+                        maxAge: 600000,
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'None',
+                    })
+                }
+
+                res.status(201).json({user: user[0], accessToken: accessToken});
             } else {
                 res.status(408).json('Incorrect password');
             }
@@ -111,12 +172,6 @@ router.post('/refreshToken', async (req, res) => {
 
     const accessToken = generateAccessToken({user: req.body.user_email});
     const refreshToken = generateRefreshToken({user: req.body.user_email}); 
-     
-    res.cookie('jwt', refreshToken, {
-        httpOnly: true,
-        sameSite: 'none', secure: true,
-        maxAge: 24 * 60 * 60 * 1000
-    });
     
     res.status(201).json({accessToken: accessToken}) 
 });

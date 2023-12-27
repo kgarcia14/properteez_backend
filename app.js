@@ -11,18 +11,10 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 // CORS Middleware at the application level for all routes
 const cors = require('cors');
-
-if (process.env.NODE_ENV === 'development') {
     app.use(cors({
-        origin: 'http://localhost:3000',
+        origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://properteez.kurtisgarcia.dev',
         credentials: true,
     }));
-} else {
-    app.use(cors({
-        origin: 'https://properteez.kurtisgarcia.dev',
-        credentials: true,
-    }));
-}
 
 //App Server
 app.listen(PORT, () => {
