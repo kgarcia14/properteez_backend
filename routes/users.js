@@ -82,14 +82,14 @@ router.post('/register', async (req, res) => {
                 sameSite: 'none',
             });
             res.cookie('accessToken', accessToken, {
-                domain: 'localhost',
+                domain: '.kurtisgarcia.dev',
                 maxAge: 60000,
                 httpOnly: true,
                 secure: true,
                 sameSite: 'none',
             });
             res.cookie('refreshToken', refreshToken, {
-                domain: 'localhost',
+                domain: '.kurtisgarcia.dev',
                 maxAge: 300000,
                 httpOnly: true,
                 secure: true,
@@ -160,14 +160,14 @@ router.post('/login', async (req, res) => {
                         sameSite: 'none',
                     });
                     res.cookie('accessToken', accessToken, {
-                        domain: 'localhost',
+                        domain: '.kurtisgarcia.dev',
                         maxAge: 60000,
                         httpOnly: true,
                         secure: true,
                         sameSite: 'none',
                     });
                     res.cookie('refreshToken', refreshToken, {
-                        domain: 'localhost',
+                        domain: '.kurtisgarcia.dev',
                         maxAge: 300000,
                         httpOnly: true,
                         secure: true,
@@ -238,14 +238,14 @@ router.post('/refreshToken', async (req, res) => {
             sameSite: 'none',
         });
         res.cookie('accessToken', accessToken, {
-            domain: 'localhost',
+            domain: '.kurtisgarcia.dev',
             maxAge: 60000,
             httpOnly: true,
             secure: true,
             sameSite: 'none',
         });
         res.cookie('refreshToken', refreshToken, {
-            domain: 'localhost',
+            domain: '.kurtisgarcia.dev',
             maxAge: 300000,
             httpOnly: true,
             secure: true,
