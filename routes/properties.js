@@ -87,7 +87,7 @@ router.post('/properties', validateToken, uploadImage, async (req, res) => {
 
     const data = req.body;
     const baseImageUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3333/' : 'https://properteezapi.kurtisgarcia.dev/';
-    const imageUrl = !req.file ? baseImageUrl + 'default_property.jpg' : baseImageUrl + req.file.path;
+    const imageUrl = !req.file ? baseImageUrl + 'images/default_property.jpg' : baseImageUrl + req.file.path;
 
     try {
         const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_term, rent_amount, rent_status, property_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *', [data.user_id, data.street, data.city, data.state, data.zip, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_term, data.rent_amount, data.rent_status, imageUrl]);
