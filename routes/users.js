@@ -13,10 +13,6 @@ const cookieParser = require('cookie-parser');
 //MIDDLEWARE
 router.use(express.json());
 router.use(cookieParser());
-// router.use(cors({
-//     origin: 'https://properteez.kurtisgarcia.dev',
-//     credentials: true,
-// }));
 
 
 //Refresh Tokens Array
@@ -24,12 +20,12 @@ let refreshTokens = [];
 
 //Generate accessToken Function
 const generateAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1m'});
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10m'});
 }
 
 // Generate refreshToken Function
 const generateRefreshToken = (user) => {
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '5m'});
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '15m'});
     refreshTokens.push(refreshToken);
     console.log(refreshTokens);
     return refreshToken;
@@ -48,49 +44,49 @@ router.post('/register', async (req, res) => {
         if (process.env.NODE_ENV === 'development') {
             res.cookie('id', results[0].id, {
                 domain: 'localhost',
-                maxAge: 300000,
+                maxAge: 900000,
                 sameSite: 'lax',
             });
             res.cookie('email', results[0].user_email, {
                 domain: 'localhost',
-                maxAge: 300000,
+                maxAge: 900000,
                 sameSite: 'lax',
             });
             res.cookie('accessToken', accessToken, {
                 domain: 'localhost',
-                maxAge: 60000,
+                maxAge: 600000,
                 httpOnly: true,
                 sameSite: 'lax',
             });
             res.cookie('refreshToken', refreshToken, {
                 domain: 'localhost',
-                maxAge: 300000,
+                maxAge: 900000,
                 httpOnly: true,
                 sameSite: 'lax',
             });
         } else {
             res.cookie('id', results[0].id, {
                 domain: '.kurtisgarcia.dev',
-                maxAge: 300000,
+                maxAge: 900000,
                 secure: true,
                 sameSite: 'none',
             });
             res.cookie('email', results[0].user_email, {
                 domain: '.kurtisgarcia.dev',
-                maxAge: 300000,
+                maxAge: 900000,
                 secure: true,
                 sameSite: 'none',
             });
             res.cookie('accessToken', accessToken, {
                 domain: '.kurtisgarcia.dev',
-                maxAge: 60000,
+                maxAge: 600000,
                 httpOnly: true,
                 secure: true,
                 sameSite: 'none',
             });
             res.cookie('refreshToken', refreshToken, {
                 domain: '.kurtisgarcia.dev',
-                maxAge: 300000,
+                maxAge: 900000,
                 httpOnly: true,
                 secure: true,
                 sameSite: 'none',
@@ -126,49 +122,49 @@ router.post('/login', async (req, res) => {
                 if (process.env.NODE_ENV === 'development') {
                     res.cookie('id', user[0].id, {
                         domain: 'localhost',
-                        maxAge: 300000,
+                        maxAge: 900000,
                         sameSite: 'lax',
                     });
                     res.cookie('email', user[0].user_email, {
                         domain: 'localhost',
-                        maxAge: 300000,
+                        maxAge: 900000,
                         sameSite: 'lax',
                     });
                     res.cookie('accessToken', accessToken, {
                         domain: 'localhost',
-                        maxAge: 60000,
+                        maxAge: 600000,
                         httpOnly: true,
                         sameSite: 'lax',
                     });
                     res.cookie('refreshToken', refreshToken, {
                         domain: 'localhost',
-                        maxAge: 300000,
+                        maxAge: 900000,
                         httpOnly: true,
                         sameSite: 'lax',
                     });
                 } else {
                     res.cookie('id', user[0].id, {
                         domain: '.kurtisgarcia.dev',
-                        maxAge: 300000,
+                        maxAge: 900000,
                         secure: true,
                         sameSite: 'none',
                     });
                     res.cookie('email', user[0].user_email, {
                         domain: '.kurtisgarcia.dev',
-                        maxAge: 300000,
+                        maxAge: 900000,
                         secure: true,
                         sameSite: 'none',
                     });
                     res.cookie('accessToken', accessToken, {
                         domain: '.kurtisgarcia.dev',
-                        maxAge: 60000,
+                        maxAge: 600000,
                         httpOnly: true,
                         secure: true,
                         sameSite: 'none',
                     });
                     res.cookie('refreshToken', refreshToken, {
                         domain: '.kurtisgarcia.dev',
-                        maxAge: 300000,
+                        maxAge: 900000,
                         httpOnly: true,
                         secure: true,
                         sameSite: 'none',
@@ -204,49 +200,49 @@ router.post('/refreshToken', async (req, res) => {
     if (process.env.NODE_ENV === 'development') {
         res.cookie('id', req.cookies.id, {
             domain: 'localhost',
-            maxAge: 300000,
+            maxAge: 900000,
             sameSite: 'lax',
         });
         res.cookie('email', req.cookies.email, {
             domain: 'localhost',
-            maxAge: 300000,
+            maxAge: 900000,
             sameSite: 'lax',
         });
         res.cookie('accessToken', accessToken, {
             domain: 'localhost',
-            maxAge: 60000,
+            maxAge: 600000,
             httpOnly: true,
             sameSite: 'lax',
         });
         res.cookie('refreshToken', refreshToken, {
             domain: 'localhost',
-            maxAge: 300000,
+            maxAge: 900000,
             httpOnly: true,
             sameSite: 'lax',
         });
     } else {
         res.cookie('id', req.cookies.id, {
             domain: '.kurtisgarcia.dev',
-            maxAge: 300000,
+            maxAge: 900000,
             secure: true,
             sameSite: 'none',
         });
         res.cookie('email', req.cookies.email, {
             domain: '.kurtisgarcia.dev',
-            maxAge: 300000,
+            maxAge: 900000,
             secure: true,
             sameSite: 'none',
         });
         res.cookie('accessToken', accessToken, {
             domain: '.kurtisgarcia.dev',
-            maxAge: 60000,
+            maxAge: 600000,
             httpOnly: true,
             secure: true,
             sameSite: 'none',
         });
         res.cookie('refreshToken', refreshToken, {
             domain: '.kurtisgarcia.dev',
-            maxAge: 300000,
+            maxAge: 900000,
             httpOnly: true,
             secure: true,
             sameSite: 'none',

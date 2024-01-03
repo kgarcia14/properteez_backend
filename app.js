@@ -11,10 +11,13 @@ const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 // CORS Middleware at the application level for all routes
 const cors = require('cors');
-    app.use(cors({
-        origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://properteez.kurtisgarcia.dev',
-        credentials: true,
-    }));
+app.use(cors({
+    origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://properteez.kurtisgarcia.dev',
+    credentials: true,
+}));
+
+const path = require('path');
+app.use('/images', express.static('images'));
 
 //App Server
 app.listen(PORT, () => {
