@@ -86,7 +86,7 @@ router.get('/properties/propertyInfo/:id', validateToken, async (req, res) => {
 router.post('/properties', validateToken, uploadImage, async (req, res) => {
 
     const data = req.body;
-    const baseImageUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3333/' : 'properteezapi.kurtisgarcia.dev/';
+    const baseImageUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3333/' : 'https://properteezapi.kurtisgarcia.dev/';
     const imageUrl = !req.file ? baseImageUrl + 'default_property.jpg' : baseImageUrl + req.file.path;
 
     try {
