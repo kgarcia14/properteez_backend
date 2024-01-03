@@ -20,13 +20,13 @@ CREATE TABLE properties (
     city VARCHAR (200) NOT NULL,
     state VARCHAR (200) NOT NULL,
     zip VARCHAR (200) NOT NULL,
-    mortgage_amount INT NOT NULL,
+    mortgage_amount VARCHAR (200) NOT NULL,
     vacancy VARCHAR (200) NOT NULL,
     renter_name VARCHAR (200) NOT NULL,
     renter_number VARCHAR (200) NOT NULL,
     renter_email VARCHAR (200) NOT NULL,
     lease_term VARCHAR (200) NOT NULL,
-    rent_amount INT NOT NULL,
+    rent_amount VARCHAR (200) NOT NULL,
     rent_status VARCHAR (200) NOT NULL,
     property_image VARCHAR (200) NOT NULL
 );
