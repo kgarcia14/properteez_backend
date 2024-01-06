@@ -254,8 +254,14 @@ router.post('/refreshToken', async (req, res) => {
 
 //Delete refresh tokens
 router.delete('/logout', (req, res) => {
+    console.log('yoooo')
     refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
     console.log(refreshTokens);
+    res.clearCookie('id');
+    res.clearCookie('email');
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+   
     res.status(204).send('Logged out!');
 })
 
