@@ -255,10 +255,50 @@ router.post('/refreshToken', async (req, res) => {
 router.delete('/logout', (req, res) => {
     refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
     console.log(refreshTokens);
-    res.cookie('id', {maxAge: 0});
-    res.cookie('email', {maxAge: 0});
-    res.cookie('accessToken', {maxAge: 0});
-    res.cookie('refreshToken', {maxAge: 0});
+    
+    if (process.env.NODE_ENV === 'development') {
+        res.clearCookie('id', {
+            domain: 'localhost',
+            sameSite: 'lax',
+        });
+        res.clearCookie('email', {
+            domain: 'localhost',
+            sameSite: 'lax',
+        });
+        res.clearCookie('accessToken', {
+            domain: 'localhost',
+            httpOnly: true,
+            sameSite: 'lax',
+        });
+        res.clearCookie('refreshToken', {
+            domain: 'localhost',
+            httpOnly: true,
+            sameSite: 'lax',
+        });
+    } else {
+        res.clearCookie('id', {
+            domain: '.kurtisgarcia.dev',
+            secure: true,
+            sameSite: 'none',
+        });
+        res.clearCookie('email', {
+            domain: '.kurtisgarcia.dev',
+            secure: true,
+            sameSite: 'none',
+        });
+        res.clearCookie('accessToken', {
+            domain: '.kurtisgarcia.dev',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
+        res.clearCookie('refreshToken', {
+            domain: '.kurtisgarcia.dev',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
+    }
    
     res.status(204).send('Logged out!');
 })
