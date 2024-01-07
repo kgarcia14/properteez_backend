@@ -36,7 +36,7 @@ const validateToken = (req, res, next) => {
 //Middleware to upload image before executing POST || PUT routes
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './images')
+        cb(null, process.env.NODE_ENV === 'development' ? './images' : './images/productionImages')
     },
     filename: (req, file, cb) => {
         console.log(file);
