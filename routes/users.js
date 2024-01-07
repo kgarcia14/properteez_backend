@@ -172,7 +172,7 @@ router.post('/login', async (req, res) => {
 
                 res.status(201).json({user: user[0], accessToken: accessToken, refreshToken: refreshToken});
             } else {
-                res.status(408).json('Incorrect password');
+                res.status(408).json('Incorrect password!');
             }
         } else {
             res.status(404).json('User not found!')
