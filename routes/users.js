@@ -8,7 +8,6 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
 
 //MIDDLEWARE
 router.use(express.json());
@@ -254,13 +253,12 @@ router.post('/refreshToken', async (req, res) => {
 
 //Delete refresh tokens
 router.delete('/logout', (req, res) => {
-    console.log('yoooo')
     refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
     console.log(refreshTokens);
-    res.clearCookie('id');
-    res.clearCookie('email');
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
+    res.clearCookie('id', { path: '/', secure: true, sameSite: 'None' });
+    res.clearCookie('email', { path: '/', secure: true, sameSite: 'None' });
+    res.clearCookie('accessToken', { path: '/', secure: true, sameSite: 'None' });
+    res.clearCookie('refreshToken', { path: '/', secure: true, sameSite: 'None' });
    
     res.status(204).send('Logged out!');
 })
