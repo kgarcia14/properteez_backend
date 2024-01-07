@@ -108,10 +108,10 @@ router.post('/login', async (req, res) => {
     console.log(req.body); 
     try {
         const user = await db.query('SELECT * FROM users WHERE user_email = $1', [req.body.user_email]);
-
+        
         console.log(user);
         
-        if (user) {
+        if (user && user.length > 0) {
             const isauthenticated = await bcrypt.compare(req.body.user_password, user[0].hashed_password);
 
             if (isauthenticated) {
