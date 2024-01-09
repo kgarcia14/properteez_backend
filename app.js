@@ -16,7 +16,6 @@ app.use(cors({
     credentials: true,
 }));
 
-const path = require('path');
 app.use('/images', express.static('images'));
 
 //App Server
