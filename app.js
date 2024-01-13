@@ -20,12 +20,20 @@ app.use('/images', express.static('images'));
 
 //App Server
 app.listen(PORT, () => {
-    console.log(`App server is listening on http://${HOSTNAME}:${PORT}`);
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`App server is listening on http://${HOSTNAME}:${PORT}`);
+    } else {
+        console.log(`App server is listening on https://properteezapi.kurtisgarcia.dev`);
+    }
 });
 
 //Auth Server
 app.listen(AUTH_PORT, () => {
-    console.log(`Auth server is listening on http://${HOSTNAME}:${AUTH_PORT}`);
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`Auth server is listening on http://${HOSTNAME}:${AUTH_PORT}`);
+    } else {
+        console.log(`App server is listening on https://properteezapi.kurtisgarcia.dev`);
+    }
 })
 
 const usersRoute = require('./routes/users');

@@ -7,7 +7,6 @@ const router = express.Router();
 const multer = require('multer');
 const cookieParser = require('cookie-parser');
 const uploadImageToGoogle = require('../gcStorage');
-const getImageFromGoogle = require('../gcStorage');
 
 const jwt = require('jsonwebtoken');
 
