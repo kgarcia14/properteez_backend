@@ -102,7 +102,7 @@ router.post('/properties', validateToken, uploadImage, async (req, res) => {
         }
         const imageUrl = !file ? 'https://properteezapi.kurtisgarcia.dev/images/default_property.jpg' : googlePublicUrl;
         
-        const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, home_type, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_term, rent_amount, rent_status, property_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *', [data.user_id, data.street, data.city, data.state, data.zip, data.home_type, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_term, data.rent_amount, data.rent_status, imageUrl]);
+        const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, home_type, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_start, lease_end, rent_amount, rent_status, property_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *', [data.user_id, data.street, data.city, data.state, data.zip, data.home_type, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_start, data.lease_end, data.rent_amount, data.rent_status, imageUrl]);
 
         console.log(results);
         
