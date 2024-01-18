@@ -19,31 +19,24 @@ const validateToken = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     if (token === null) {
-        res.sendStatus(400).send('Token not present');
+        res.status(400).send('Token not present');
     }
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) {
-            res.status(403).send('Token Invalid');
-        } 
-        else {
-            console.log(user) 
-            req.user = user;
-            next();
-        }
-    });
+    if (req.cookies && Object.keys(req.cookies).length) {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if (err) {
+                res.status(403).send('Token Invalid');
+            } 
+            else {
+                console.log(user) 
+                req.user = user;
+                next();
+            }
+        });
+    } else {
+        res.status(204).send('No Content')
+    }
 }
-
-// Middleware to upload image before executing POST || PUT routes. This will be uploaded to app server
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, './images')
-//     },
-//     filename: (req, file, cb) => {
-//         console.log(file);
-//         cb(null, Date.now() + path.extname(file.originalname));
-//     }
-// })
 
 // Middleware to upload image before executing POST || PUT routes. This will be uploaded to Google Cloud
 const uploadImage = multer({
@@ -51,12 +44,77 @@ const uploadImage = multer({
 }).single('property_image');
 
 //ROUTES
+//Check for User ID which is an http Cookie
+router.get('/validateUser', validateToken, async (req, res) => {
+    // using parseInt to make both the same type so that we can compare the two
+    const userId = parseInt(req.user.userId)
+    const cookieUserId = parseInt(req.cookies['id']);
+
+    try {
+        console.log(userId, typeof(userId))
+        console.log(cookieUserId, typeof(cookieUserId))
+        if (userId === cookieUserId) {
+            return res.status(200).send('Valid User ID');
+        } else {
+            if (process.env.NODE_ENV === 'development') {
+                res.clearCookie('id', {
+                    domain: 'localhost',
+                    httpOnly: true,
+                    sameSite: 'lax',
+                });
+                res.clearCookie('email', {
+                    domain: 'localhost',
+                    sameSite: 'lax',
+                });
+                res.clearCookie('accessToken', {
+                    domain: 'localhost',
+                    httpOnly: true,
+                    sameSite: 'lax',
+                });
+                res.clearCookie('refreshToken', {
+                    domain: 'localhost',
+                    httpOnly: true,
+                    sameSite: 'lax',
+                });
+            } else {
+                res.clearCookie('id', {
+                    domain: '.kurtisgarcia.dev',
+                    secure: true,
+                    sameSite: 'none',
+                });
+                res.clearCookie('email', {
+                    domain: '.kurtisgarcia.dev',
+                    secure: true,
+                    sameSite: 'none',
+                });
+                res.clearCookie('accessToken', {
+                    domain: '.kurtisgarcia.dev',
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none',
+                });
+                res.clearCookie('refreshToken', {
+                    domain: '.kurtisgarcia.dev',
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none',
+                });
+            }
+            return res.status(401).send('Invalid User ID!');
+        }
+    } catch (err) {
+        console.log(err);
+    }
+})
+
 //Get all properties
-router.get('/properties/:user_id', validateToken, async (req, res) => {
+router.get('/properties', validateToken, async (req, res) => {
     console.log('Token is valid!');
 
     try {
-        const results = await db.query('SELECT * FROM properties WHERE user_id = $1 order by id', [req.params.user_id]);
+        const id = req.cookies['id'];
+
+        const results = await db.query('SELECT * FROM properties WHERE user_id = $1 order by id', [id]);
     
         res.status(200).json({
             status: 'success',

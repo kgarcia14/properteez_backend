@@ -37,13 +37,14 @@ router.post('/register', async (req, res) => {
         const hash = await bcrypt.hash(req.body.user_password, 10);
         const results = await db.query('INSERT INTO users(user_email, hashed_password) VALUES($1, $2) RETURNING *', [req.body.user_email, hash]);
         
-        const accessToken = generateAccessToken({user: results[0].user_email});
-        const refreshToken = generateRefreshToken({user: results[0].user_email});
+        const accessToken = generateAccessToken({ user: results[0].user_email, userId: results[0].id });
+        const refreshToken = generateRefreshToken({ user: results[0].user_email, userId: results[0].id });
 
         if (process.env.NODE_ENV === 'development') {
             res.cookie('id', results[0].id, {
                 domain: 'localhost',
                 maxAge: 900000,
+                httpOnly: true,
                 sameSite: 'lax',
             });
             res.cookie('email', results[0].user_email, {
@@ -115,13 +116,14 @@ router.post('/login', async (req, res) => {
             const isauthenticated = await bcrypt.compare(req.body.user_password, user[0].hashed_password);
 
             if (isauthenticated) {
-                const accessToken = generateAccessToken({user: user[0].user_email});
-                const refreshToken = generateRefreshToken({user: user[0].user_email});
+                const accessToken = generateAccessToken({ user: user[0].user_email, userId: user[0].id });
+                const refreshToken = generateRefreshToken({ user: user[0].user_email, userId: user[0].id });
 
                 if (process.env.NODE_ENV === 'development') {
                     res.cookie('id', user[0].id, {
                         domain: 'localhost',
                         maxAge: 900000,
+                        httpOnly: true,
                         sameSite: 'lax',
                     });
                     res.cookie('email', user[0].user_email, {
@@ -188,18 +190,19 @@ router.post('/refreshToken', async (req, res) => {
         return res.status(400).send('Refresh Token Missing/Invalid');
     }
 
-    console.log(req.cookies)
+    console.log(req.body)
 
     refreshTokens = refreshTokens.filter(token => token !== req.cookies.refreshToken);
     console.log('refreshTokensArray:', refreshTokens);
 
-    const accessToken = generateAccessToken({user: req.cookies.email});
-    const refreshToken = generateRefreshToken({user: req.cookies.email});
+    const accessToken = generateAccessToken({ user: req.cookies.email, userId: req.cookies.id });
+    const refreshToken = generateRefreshToken({ user: req.cookies.email, userId: req.cookies.id});
 
     if (process.env.NODE_ENV === 'development') {
         res.cookie('id', req.cookies.id, {
             domain: 'localhost',
             maxAge: 900000,
+            httpOnly: true,
             sameSite: 'lax',
         });
         res.cookie('email', req.cookies.email, {
@@ -259,6 +262,7 @@ router.delete('/logout', (req, res) => {
     if (process.env.NODE_ENV === 'development') {
         res.clearCookie('id', {
             domain: 'localhost',
+            httpOnly: true,
             sameSite: 'lax',
         });
         res.clearCookie('email', {
