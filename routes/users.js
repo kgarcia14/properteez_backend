@@ -68,6 +68,7 @@ router.post('/register', async (req, res) => {
             res.cookie('id', results[0].id, {
                 domain: '.kurtisgarcia.dev',
                 maxAge: 900000,
+                httpOnly: true,
                 secure: true,
                 sameSite: 'none',
             });
@@ -147,6 +148,7 @@ router.post('/login', async (req, res) => {
                     res.cookie('id', user[0].id, {
                         domain: '.kurtisgarcia.dev',
                         maxAge: 900000,
+                        httpOnly: true,
                         secure: true,
                         sameSite: 'none',
                     });
@@ -226,6 +228,7 @@ router.post('/refreshToken', async (req, res) => {
         res.cookie('id', req.cookies.id, {
             domain: '.kurtisgarcia.dev',
             maxAge: 900000,
+            httpOnly: true,
             secure: true,
             sameSite: 'none',
         });
@@ -282,6 +285,7 @@ router.delete('/logout', (req, res) => {
     } else {
         res.clearCookie('id', {
             domain: '.kurtisgarcia.dev',
+            httpOnly: true,
             secure: true,
             sameSite: 'none',
         });
