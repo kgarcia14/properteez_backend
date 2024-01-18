@@ -149,8 +149,7 @@ router.post('/properties', validateToken, uploadImage, async (req, res) => {
     try {
         const data = req.body;
         const file = req.file;
-        const id = req.cookies['id'];
-        // const email = req.cookies['email'];
+        const userId = req.cookies['id'];
 
         let googlePublicUrl;
 
@@ -160,7 +159,7 @@ router.post('/properties', validateToken, uploadImage, async (req, res) => {
         }
         const imageUrl = !file ? 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' : googlePublicUrl;
         
-        const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, home_type, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_start, lease_end, rent_amount, rent_status, property_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *', [data.user_id, data.street, data.city, data.state, data.zip, data.home_type, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_start, data.lease_end, data.rent_amount, data.rent_status, imageUrl]);
+        const results = await db.query('INSERT INTO properties(user_id, street, city, state, zip, home_type, mortgage_amount, vacancy, renter_name, renter_number, renter_email, lease_start, lease_end, rent_amount, rent_status, property_image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *', [userId, data.street, data.city, data.state, data.zip, data.home_type, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_start, data.lease_end, data.rent_amount, data.rent_status, imageUrl]);
 
         console.log(results);
         
