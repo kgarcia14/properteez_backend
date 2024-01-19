@@ -154,7 +154,7 @@ router.post('/properties', validateToken, uploadImage, async (req, res) => {
         let googlePublicUrl;
 
         if (file) {
-            const uploadToGoogle = await uploadImageToGoogle(file, id);
+            const uploadToGoogle = await uploadImageToGoogle(file, userId);
             googlePublicUrl = uploadToGoogle;
         }
         const imageUrl = !file ? 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' : googlePublicUrl;
@@ -176,16 +176,26 @@ router.post('/properties', validateToken, uploadImage, async (req, res) => {
 
 //Edit property
 router.put('/properties/:id', validateToken, uploadImage, async (req, res) => {
-    console.log(req.file);
-
-    const data = JSON.parse(req.body);
-
     try {
-        const results = await db.query('UPDATE properties SET street = $1, city = $2, state = $3, zip = $4, mortgage_amount = $5, vacancy = $6, renter_name = $7, renter_number = $8, renter_email = $9, lease_term = $10, rent_amount = $11, rent_status = $12, property_image = $13 WHERE id = $14 RETURNING *', [req.body.street, req.body.city, req.body.state, req.body.zip, req.body.mortgage_amount, req.body.vacancy, req.body.renter_name, req.body.renter_number, req.body.renter_email, req.body.lease_term, req.body.rent_amount, req.body.rent_status, req.file.path, req.params.id]);
+        console.log(req.file);
+
+        const data = req.body;
+        const file = req.file;
+        const userId = req.cookies['id'];
+
+        let googlePublicUrl;
+
+        if (file) {
+            const uploadToGoogle = await uploadImageToGoogle(file, userId);
+            googlePublicUrl = uploadToGoogle;
+        }
+        const imageUrl = !file ? 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' : googlePublicUrl;
+
+        const results = await db.query('UPDATE properties SET street = $1, city = $2, state = $3, zip = $4, home_type = $5, mortgage_amount = $6, vacancy = $7, renter_name = $8, renter_number = $9, renter_email = $10, lease_start = $11, lease_end = $12, rent_amount = $13, rent_status = $14, property_image = $15 WHERE id = $16 RETURNING *', [data.street, data.city, data.state, data.zip, data.home_type, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_start, data.lease_end, data.rent_amount, data.rent_status, imageUrl, req.params.id]);
     
         console.log(results);
     
-        res.status(200).json({
+        res.status(201).json({
             status: 'success',
             data: {
                 property: results
