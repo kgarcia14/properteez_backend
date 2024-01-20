@@ -189,7 +189,11 @@ router.put('/properties/:id', validateToken, uploadImage, async (req, res) => {
             const uploadToGoogle = await uploadImageToGoogle(file, userId);
             googlePublicUrl = uploadToGoogle;
         }
-        const imageUrl = !file ? 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' : googlePublicUrl;
+
+        const currentImageResult = await db.query('SELECT property_image FROM properties WHERE id = $1', [req.params.id]);
+        const currentImage = currentImageResult[0].property_image;
+
+        const imageUrl = !file ? currentImage : googlePublicUrl;
 
         const results = await db.query('UPDATE properties SET street = $1, city = $2, state = $3, zip = $4, home_type = $5, mortgage_amount = $6, vacancy = $7, renter_name = $8, renter_number = $9, renter_email = $10, lease_start = $11, lease_end = $12, rent_amount = $13, rent_status = $14, property_image = $15 WHERE id = $16 RETURNING *', [data.street, data.city, data.state, data.zip, data.home_type, data.mortgage_amount, data.vacancy, data.renter_name, data.renter_number, data.renter_email, data.lease_start, data.lease_end, data.rent_amount, data.rent_status, imageUrl, req.params.id]);
     
@@ -204,7 +208,6 @@ router.put('/properties/:id', validateToken, uploadImage, async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-
 });
 
 //Delete property
