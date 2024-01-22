@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
                 httpOnly: true,
                 sameSite: 'lax',
             });
-            res.cookie('email', results[0].user_email, {
+            res.cookie('isLoggedIn', true, {
                 domain: 'localhost',
                 maxAge: 1200000,
                 sameSite: 'lax',
@@ -72,7 +72,7 @@ router.post('/register', async (req, res) => {
                 secure: true,
                 sameSite: 'none',
             });
-            res.cookie('email', results[0].user_email, {
+            res.cookie('isLoggedIn', true, {
                 domain: '.kurtisgarcia.dev',
                 maxAge: 1200000,
                 secure: true,
@@ -127,7 +127,7 @@ router.post('/login', async (req, res) => {
                         httpOnly: true,
                         sameSite: 'lax',
                     });
-                    res.cookie('email', user[0].user_email, {
+                    res.cookie('isLoggedIn', true, {
                         domain: 'localhost',
                         maxAge: 1200000,
                         sameSite: 'lax',
@@ -152,7 +152,7 @@ router.post('/login', async (req, res) => {
                         secure: true,
                         sameSite: 'none',
                     });
-                    res.cookie('email', user[0].user_email, {
+                    res.cookie('isLoggedIn', true, {
                         domain: '.kurtisgarcia.dev',
                         maxAge: 1200000,
                         secure: true,
@@ -207,7 +207,7 @@ router.post('/refreshToken', async (req, res) => {
             httpOnly: true,
             sameSite: 'lax',
         });
-        res.cookie('email', req.cookies.email, {
+        res.cookie('isLoggedIn', true, {
             domain: 'localhost',
             maxAge: 1200000,
             sameSite: 'lax',
@@ -232,7 +232,7 @@ router.post('/refreshToken', async (req, res) => {
             secure: true,
             sameSite: 'none',
         });
-        res.cookie('email', req.cookies.email, {
+        res.cookie('isLoggedIn', true, {
             domain: '.kurtisgarcia.dev',
             maxAge: 1200000,
             secure: true,
@@ -268,7 +268,7 @@ router.delete('/logout', (req, res) => {
             httpOnly: true,
             sameSite: 'lax',
         });
-        res.clearCookie('email', {
+        res.clearCookie('isLoggedIn', {
             domain: 'localhost',
             sameSite: 'lax',
         });
@@ -289,7 +289,7 @@ router.delete('/logout', (req, res) => {
             secure: true,
             sameSite: 'none',
         });
-        res.clearCookie('email', {
+        res.clearCookie('isLoggedIn', {
             domain: '.kurtisgarcia.dev',
             secure: true,
             sameSite: 'none',

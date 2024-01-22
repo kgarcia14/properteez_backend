@@ -62,7 +62,7 @@ router.get('/validateUser', validateToken, async (req, res) => {
                     httpOnly: true,
                     sameSite: 'lax',
                 });
-                res.clearCookie('email', {
+                res.clearCookie('isLoggedIn', {
                     domain: 'localhost',
                     sameSite: 'lax',
                 });
@@ -82,7 +82,7 @@ router.get('/validateUser', validateToken, async (req, res) => {
                     secure: true,
                     sameSite: 'none',
                 });
-                res.clearCookie('email', {
+                res.clearCookie('isLoggedIn', {
                     domain: '.kurtisgarcia.dev',
                     secure: true,
                     sameSite: 'none',
