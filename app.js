@@ -10,24 +10,20 @@ const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 //ping server
-// const cron = require('node-cron');
 const http = require('http');
+const https = require('https');
 const { CronJob } = require('cron');
 
 const pingUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3333/ping' : 'https://properteezapi.kurtisgarcia.dev/ping';
+const requestProtocol = process.env.NODE_ENV === 'development' ? http : https;
 
 const pingServer = () => {
-    http.get(pingUrl, (res) => {
+    requestProtocol.get(pingUrl, (res) => {
       console.log(`Ping successful. Status code: ${res.statusCode}`);
     }).on('error', (err) => {
       console.error(`Error pinging server: ${err.message}`);
     });
   };
-
-// cron.schedule('*/5 * * * *', () => {
-//     console.log('I know you are tired but please stay awake so I can get a job...');
-//     pingServer();
-// });
 
 const job = new CronJob(
 	'* * * * *', // cronTime
