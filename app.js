@@ -9,9 +9,24 @@ const HOSTNAME = '127.0.0.1';
 const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
+//ping server
 const cron = require('node-cron');
+const http = require('http');
+
+const pingUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3333/ping' : 'https://properteezapi.kurtisgarcia.dev/ping';
+
+const pingServer = () => {
+    http.get(pingUrl, (res) => {
+      console.log(`Ping successful. Status code: ${res.statusCode}`);
+    }).on('error', (err) => {
+      console.error(`Error pinging server: ${err.message}`);
+    });
+  };
+
+// cron.schedule('* * * * *', () => {
 cron.schedule('*/14 * * * *', () => {
-    console.log('yooo');
+    console.log('I know you are tired but please stay awake so I can get a job...');
+    pingServer();
 });
 
 
@@ -42,8 +57,10 @@ app.listen(AUTH_PORT, () => {
     }
 })
 
+const cronRoute = require('./routes/cron');
 const usersRoute = require('./routes/users');
 const propertiesRoute = require('./routes/properties');
 
+app.use('/', cronRoute);
 app.use('/', usersRoute);
 app.use('/', propertiesRoute);
