@@ -9,10 +9,10 @@ const HOSTNAME = '127.0.0.1';
 const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
-// const cron = require('node-cron');
-// cron.schedule('*/14 * * * *', () => {
-//     console.log('yooo');
-// });
+const cron = require('node-cron');
+cron.schedule('*/14 * * * *', () => {
+    console.log('yooo');
+});
 
 
 // CORS Middleware at the application level for all routes
