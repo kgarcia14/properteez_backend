@@ -28,11 +28,11 @@ const pingServer = () => {
 const job = new CronJob(
 	'* * * * *', // cronTime
 	function () {
-		console.log('You will see this message every minute');
+		console.log('I know you are tired, but please stay awake so I can get a job...');
         pingServer();
 	}, // onTick
 	null, // onComplete
-	true, // start
+	true, // starts without having to be called
 	'America/Los_Angeles' // timeZone
 );
 
