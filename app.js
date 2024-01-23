@@ -5,7 +5,7 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 
-const HOSTNAME = '127.0.0.1';
+const HOSTNAME = process.env.NODE_ENV === 'development' ? '127.0.0.1' : 'properteezapi.kurtisgarcia.dev';
 const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
@@ -24,7 +24,7 @@ const pingServer = () => {
   };
 
 // cron.schedule('* * * * *', () => {
-cron.schedule('*/14 * * * *', () => {
+cron.schedule('*/5 * * * *', () => {
     console.log('I know you are tired but please stay awake so I can get a job...');
     pingServer();
 });
@@ -44,7 +44,7 @@ app.listen(PORT, () => {
     if (process.env.NODE_ENV === 'development') {
         console.log(`App server is listening on http://${HOSTNAME}:${PORT}`);
     } else {
-        console.log(`App server is listening on https://properteezapi.kurtisgarcia.dev`);
+        console.log(`App server is listening on https://${HOSTNAME}:${PORT}`);
     }
 });
 
@@ -53,7 +53,7 @@ app.listen(AUTH_PORT, () => {
     if (process.env.NODE_ENV === 'development') {
         console.log(`Auth server is listening on http://${HOSTNAME}:${AUTH_PORT}`);
     } else {
-        console.log(`App server is listening on https://properteezapi.kurtisgarcia.dev`);
+        console.log(`App server is listening on https://${HOSTNAME}:${AUTH_PORT}`);
     }
 })
 
