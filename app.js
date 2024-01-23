@@ -25,7 +25,7 @@ const pingServer = () => {
     });
   };
 
-cron.schedule('*/5 * * * *', () => {
+cron.schedule('*/14 * * * *', () => {
     console.log('I know you are tired but please stay awake so I can get a job...');
     pingServer();
 });
