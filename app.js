@@ -10,9 +10,9 @@ const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
 //ping server
+const cron = require('node-cron');
 const http = require('http');
 const https = require('https');
-const { CronJob } = require('cron');
 
 const pingUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3333/ping' : 'https://properteezapi.kurtisgarcia.dev/ping';
 const requestProtocol = process.env.NODE_ENV === 'development' ? http : https;
@@ -25,16 +25,11 @@ const pingServer = () => {
     });
   };
 
-const job = new CronJob(
-	'* * * * *', // cronTime
-	function () {
-		console.log('I know you are tired, but please stay awake so I can get a job...');
-        pingServer();
-	}, // onTick
-	null, // onComplete
-	true, // starts without having to be called
-	'America/Los_Angeles' // timeZone
-);
+cron.schedule('* * * * *', () => {
+// cron.schedule('*/5 * * * *', () => {
+    console.log('I know you are tired but please stay awake so I can get a job...');
+    pingServer();
+});
 
 
 // CORS Middleware at the application level for all routes
