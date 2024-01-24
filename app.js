@@ -9,7 +9,7 @@ const HOSTNAME = process.env.NODE_ENV === 'development' ? '127.0.0.1' : 'propert
 const PORT = process.env.APP_SERVER_PORT;
 const AUTH_PORT = process.env.TOKEN_SERVER_PORT
 
-//ping server
+//cron job to ping server and keep awake
 const cron = require('node-cron');
 const http = require('http');
 const https = require('https');

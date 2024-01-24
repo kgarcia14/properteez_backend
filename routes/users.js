@@ -47,6 +47,12 @@ router.post('/register', async (req, res) => {
                 httpOnly: true,
                 sameSite: 'lax',
             });
+            res.cookie('email', results[0].user_email, {
+                domain: 'localhost',
+                maxAge: 1200000,
+                httpOnly: true,
+                sameSite: 'lax',
+            });
             res.cookie('isLoggedIn', true, {
                 domain: 'localhost',
                 maxAge: 1200000,
@@ -66,6 +72,13 @@ router.post('/register', async (req, res) => {
             });
         } else {
             res.cookie('id', results[0].id, {
+                domain: '.kurtisgarcia.dev',
+                maxAge: 1200000,
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+            });
+            res.cookie('email', results[0].user_email, {
                 domain: '.kurtisgarcia.dev',
                 maxAge: 1200000,
                 httpOnly: true,
@@ -127,6 +140,12 @@ router.post('/login', async (req, res) => {
                         httpOnly: true,
                         sameSite: 'lax',
                     });
+                    res.cookie('email', user[0].user_email, {
+                        domain: 'localhost',
+                        maxAge: 1200000,
+                        httpOnly: true,
+                        sameSite: 'lax',
+                    });
                     res.cookie('isLoggedIn', true, {
                         domain: 'localhost',
                         maxAge: 1200000,
@@ -146,6 +165,13 @@ router.post('/login', async (req, res) => {
                     });
                 } else {
                     res.cookie('id', user[0].id, {
+                        domain: '.kurtisgarcia.dev',
+                        maxAge: 1200000,
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'none',
+                    });
+                    res.cookie('email', user[0].user_email, {
                         domain: '.kurtisgarcia.dev',
                         maxAge: 1200000,
                         httpOnly: true,
@@ -207,6 +233,12 @@ router.post('/refreshToken', async (req, res) => {
             httpOnly: true,
             sameSite: 'lax',
         });
+        res.cookie('email', req.cookies.email, {
+            domain: 'localhost',
+            maxAge: 1200000,
+            httpOnly: true,
+            sameSite: 'lax',
+        });
         res.cookie('isLoggedIn', true, {
             domain: 'localhost',
             maxAge: 1200000,
@@ -226,6 +258,13 @@ router.post('/refreshToken', async (req, res) => {
         });
     } else {
         res.cookie('id', req.cookies.id, {
+            domain: '.kurtisgarcia.dev',
+            maxAge: 1200000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
+        res.cookie('email', req.cookies.email, {
             domain: '.kurtisgarcia.dev',
             maxAge: 1200000,
             httpOnly: true,
@@ -268,6 +307,11 @@ router.delete('/logout', (req, res) => {
             httpOnly: true,
             sameSite: 'lax',
         });
+        res.clearCookie('email', {
+            domain: 'localhost',
+            httpOnly: true,
+            sameSite: 'lax',
+        });
         res.clearCookie('isLoggedIn', {
             domain: 'localhost',
             sameSite: 'lax',
@@ -284,6 +328,12 @@ router.delete('/logout', (req, res) => {
         });
     } else {
         res.clearCookie('id', {
+            domain: '.kurtisgarcia.dev',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
+        res.clearCookie('email', {
             domain: '.kurtisgarcia.dev',
             httpOnly: true,
             secure: true,
