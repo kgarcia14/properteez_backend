@@ -61,7 +61,9 @@ app.listen(AUTH_PORT, () => {
 const cronRoute = require('./routes/cron');
 const usersRoute = require('./routes/users');
 const propertiesRoute = require('./routes/properties');
+const tasksRoute = require('./routes/tasks');
 
 app.use('/', cronRoute);
 app.use('/', usersRoute);
 app.use('/', propertiesRoute);
+app.use('/', tasksRoute);
