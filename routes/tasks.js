@@ -99,9 +99,46 @@ router.post('/tasks', validateToken, async (req, res) => {
 router.put('/tasks/:id', validateToken, async (req, res) => {
     try {
         const data = req.body;
-        const userId = req.cookies['id'];
 
         const results = await db.query('UPDATE tasks SET street = $1, title = $2, description = $3, status = $4, complete = $5 WHERE id = $6 RETURNING *', [data.street, data.title, data.description, data.status, data.complete, req.params.id]);
+    
+        console.log(results);
+    
+        res.status(201).json({
+            status: 'success',
+            data: {
+                task: results
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+// mark task complete by updating
+router.put('/markTaskComplete/:id', validateToken, async (req, res) => {
+    try {
+
+        const results = await db.query('UPDATE tasks SET complete = $1 WHERE id = $2 RETURNING *', [true, req.params.id]);
+    
+        console.log(results);
+    
+        res.status(201).json({
+            status: 'success',
+            data: {
+                task: results
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+// mark task complete by updating
+router.put('/markTaskIncomplete/:id', validateToken, async (req, res) => {
+    try {
+
+        const results = await db.query('UPDATE tasks SET complete = $1 WHERE id = $2 RETURNING *', [false, req.params.id]);
     
         console.log(results);
     
