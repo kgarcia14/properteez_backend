@@ -78,9 +78,10 @@ router.get('/tasks/taskDetails/:id', validateToken, async (req, res) => {
 router.post('/tasks', validateToken, async (req, res) => {
     try {
         const data = req.body;
+        console.log(data)
         const userId = req.cookies['id'];
         
-        const results = await db.query('INSERT INTO tasks(user_id, street, title, description, status, complete) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', [userId, data.street, data.title, data.description, data.status, data.complete]);
+        const results = await db.query('INSERT INTO tasks(user_id, location, title, description, status, complete) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', [userId, data.task_location, data.task_title, data.task_description, data.task_status, false]);
 
         console.log(results);
         
@@ -100,7 +101,7 @@ router.put('/tasks/:id', validateToken, async (req, res) => {
     try {
         const data = req.body;
 
-        const results = await db.query('UPDATE tasks SET street = $1, title = $2, description = $3, status = $4, complete = $5 WHERE id = $6 RETURNING *', [data.street, data.title, data.description, data.status, data.complete, req.params.id]);
+        const results = await db.query('UPDATE tasks SET location = $1, title = $2, description = $3, status = $4, complete = $5 WHERE id = $6 RETURNING *', [data.location, data.title, data.description, data.status, data.complete, req.params.id]);
     
         console.log(results);
     

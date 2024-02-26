@@ -40,12 +40,12 @@ INSERT INTO properties(user_id, street, city, state, zip, home_type, mortgage_am
 CREATE TABLE tasks (
     id serial PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id),
-    street VARCHAR (200) NOT NULL,
+    location VARCHAR (200) NOT NULL,
     title VARCHAR (200) NOT NULL,
     description VARCHAR (200) NOT NULL,
     status VARCHAR (200) NOT NULL,
     complete BOOLEAN NOT NULL,
 );
 
-INSERT INTO tasks(user_id, street, title, description, status, complete) VALUES($1, $2, $3, $4, $5, $6) RETURNING *, ['29', '48 Timberland Way', 'Collect Rent', 'Need to collect rent from every property', 'urgent', false];
+INSERT INTO tasks(user_id, location, title, description, status, complete) VALUES($1, $2, $3, $4, $5, $6) RETURNING *, ['29', '48 Timberland Way', 'Collect Rent', 'Need to collect rent from every property', 'urgent', false];
 
