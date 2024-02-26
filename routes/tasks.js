@@ -101,7 +101,7 @@ router.put('/tasks/:id', validateToken, async (req, res) => {
     try {
         const data = req.body;
 
-        const results = await db.query('UPDATE tasks SET location = $1, title = $2, description = $3, status = $4, complete = $5 WHERE id = $6 RETURNING *', [data.location, data.title, data.description, data.status, data.complete, req.params.id]);
+        const results = await db.query('UPDATE tasks SET location = $1, title = $2, description = $3, status = $4, complete = $5 WHERE id = $6 RETURNING *', [data.task_location, data.task_title, data.task_description, data.task_status, data.task_complete, req.params.id]);
     
         console.log(results);
     
