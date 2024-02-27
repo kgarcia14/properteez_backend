@@ -1,4 +1,5 @@
-# Properteez
+<img src="./images/readme_images/properteez_logo.png" width="200" alt="properteez logo"/>
+
 <!-- ##### *[Click Here](https://youtu.be/BVDUV6CEojs) for demo* -->
 
 ##### *[Click Here](https://properteez.kurtisgarcia.dev) for live site*
