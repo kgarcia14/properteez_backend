@@ -17,17 +17,17 @@ const https = require('https');
 const pingUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3333/ping' : 'https://properteezapi.kurtisgarcia.dev/ping';
 const requestProtocol = process.env.NODE_ENV === 'development' ? http : https;
 
-const pingServer = () => {
+const pingServerAndDb = () => {
     requestProtocol.get(pingUrl, (res) => {
       console.log(`Ping successful. Status code: ${res.statusCode}`);
     }).on('error', (err) => {
       console.error(`Error pinging server: ${err.message}`);
     });
-  };
+};
 
-cron.schedule('*/14 * * * *', () => {
+cron.schedule('*/13 * * * *', () => {
     console.log('I know you are tired but please stay awake so I can get a job...');
-    pingServer();
+    pingServerAndDb();
 });
 
 
