@@ -20,7 +20,6 @@ router.get('/ping', async (req, res) => {
         const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
         const TABLE_NAME = process.env.SUPABASE_TABLE_NAME;
         const PING_URL = `${SUPABASE_URL}/rest/v1/${TABLE_NAME}?select=id&limit=1`;
-        console.log(PING_URL)
 
         const supabaseRes = await fetch(PING_URL, {
             method: 'GET',
