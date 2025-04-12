@@ -25,11 +25,10 @@ const pingServerAndDb = () => {
     });
 };
 
-cron.schedule('*/15 * * * * *', () => {
+cron.schedule('*/10 * * * *', () => {
     console.log('I know you are tired but please stay awake so I can get a job...');
     pingServerAndDb();
 });
-
 
 // CORS Middleware at the application level for all routes
 const cors = require('cors');
